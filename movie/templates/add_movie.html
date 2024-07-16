@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Movie</title>
+    {% load static %}
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .background {
+            background-image: url("{% static 'background1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(180, 6, 6, 0.8);
+        }
+
+        .navbar a {
+            color: rgb(22, 20, 20);
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #ff4c4c;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body class="background">
+    <div class="navbar">
+        <div class="username">
+            <a href="{% url 'profile' %}">{{ user.username }}</a>
+        </div>
+        
+        <div class="dropdown">
+            <a class="dropbtn">Category</a>
+            <div class="dropdown-content">
+                <a href="{% url 'category' 'Mollywood' %}">Mollywood</a>
+                <a href="{% url 'category' 'Kollywood' %}">Kollywood</a>
+                <a href="{% url 'category' 'Bollywood' %}">Bollywood</a>
+                <a href="{% url 'category' 'Hollywood' %}">Hollywood</a>
+                <a href="{% url 'category' 'Anime' %}">Anime</a>
+            </div>
+        </div>
+        <div class="logout">
+            <a href="{% url 'home' %}">Logout</a>
+        </div>
+    </div>
+    <h2>Add Movie</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Movie</button>
+    </form>
+</body>
+</html>
+

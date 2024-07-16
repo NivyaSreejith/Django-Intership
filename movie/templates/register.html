@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    {% load static %}
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .background {
+            background-image: url("{% static 'background2.jpg' %}");
+            background-size: cover;
+            min-height: 100%;
+            flex-direction: column;
+            color: rgb(255, 255, 255);
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(15, 218, 201, 0.5);
+            max-width: 500px;
+            width: 100%;
+            text-align: left;
+            color: rgb(216, 240, 240);
+            background-color: rgba(224, 208, 208, 0.6); 
+            margin: 20px; 
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(4, 4, 4, 0.92);
+            color: rgb(248, 241, 241);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000; 
+        }
+
+        .popup h2 {
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            margin-bottom: 20px;
+        }
+
+        .popup .close-btn {
+            background-color: #e8501b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+    </style>
+  <script>
+        
+    function showPopup() {
+        document.getElementById("popup").style.display = "block";
+
+        setTimeout(() => {
+        popup.style.display = "none";
+    }, 100000);
+    }
+
+    
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+</script>
+</head>
+<body>
+    <div class="background">
+        <div class="container">
+            
+            
+                <h2>Sign Up</h2>
+                <form method="post" onsubmit="showPopup()">
+                    {% csrf_token %}
+                    {{ user_form.as_p }}
+                    <button type="submit" class="submit-btn">Register</button>
+                </form>
+           
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <h2>Welcome!</h2>
+        <p>Thank you for registering on our Movie Platform.</p>
+        <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+
+</body>
+</html>

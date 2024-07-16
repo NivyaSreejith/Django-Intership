@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie List - Movie Platform</title>
+    {% load static %}
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .background {
+            background-image: url("{% static 'background.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(180, 6, 6, 0.8);
+        }
+
+        .navbar a {
+            color: rgb(22, 20, 20);
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .search-bar button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #ff4c4c;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .content {
+            margin-top: 50px;
+        }
+
+        .content h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: left;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .movie-list .movie-item {
+            flex: 1 0 21%;
+            margin: 1%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .movie-item a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .movie-list img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .movie-title {
+            font-size: 20px;
+            color: #eee7e7;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="navbar">
+            <div class="username">
+                <a href="{% url 'profile' %}">{{ user.username }}</a>
+            </div>
+            <div class="addmovie">
+                <a href="{% url 'add_movie' %}">Add Movie</a>
+            </div>
+            <div class="dropdown">
+                <a class="dropbtn">Category</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'category' 'Mollywood' %}">Mollywood</a>
+                    <a href="{% url 'category' 'Kollywood' %}">Kollywood</a>
+                    <a href="{% url 'category' 'Bollywood' %}">Bollywood</a>
+                    <a href="{% url 'category' 'Hollywood' %}">Hollywood</a>
+                    <a href="{% url 'category' 'Anime' %}">Anime</a>
+                </div>
+            </div>
+            <div class="search-bar">
+                <form method="GET" action="{% url 'movie_search' %}">
+                    <input type="text" name="q" placeholder="Search movies...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="logout">
+                <a href="{% url 'home' %}">Logout</a>
+            </div>
+        </div>
+        <div class="content">
+            <h1>Movie List</h1>
+            <div class="movie-list">
+                {% for movie in movies %}
+                <div class="movie-item">
+                    <a href="{% url 'movie_detail' movie.pk %}">
+                        <img src="{{ movie.poster.url }}" alt="{{ movie.title }}">
+                        <div class="movie-title">{{ movie.title }}</div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

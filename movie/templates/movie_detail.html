@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ movie.title }}</title>
+    {% load static %}
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("{% static 'background4.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            min-height: 100%;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            margin: 20px auto;
+            color: white;
+        }
+
+        h2, h3 {
+            color: aqua;
+        }
+
+        p, ul, li, a {
+            color: white;
+        }
+
+        form > * {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .btn-danger {
+            background-color: #f44336;
+        }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+        }
+
+        .btn-secondary {
+            background-color: #9e9e9e;
+        }
+
+        .btn-secondary:hover {
+            background-color: #757575;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this movie?');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ movie.title }}</h2>
+        <p>{{ movie.description }}</p>
+        <p>Release Date: {{ movie.release_date }}</p>
+        <p>Actors: {{ movie.actors }}</p>
+        <p>Category: {{ movie.category.name }}</p>
+        <p>Trailer: <a href="{{ movie.trailer_link }}" target="_blank">Watch Trailer</a></p>
+        <img src="{{ movie.poster.url }}" alt="{{ movie.title }} poster">
+
+        {% if user == movie.added_by %}
+            <form method="get" action="{% url 'update_movie' movie.pk %}">
+                <button type="submit" class="btn-secondary">Update Movie</button>
+            </form>
+            <form method="post" action="{% url 'delete_movie' movie.pk %}" onsubmit="return confirmDelete();">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Delete Movie</button>
+            </form>
+        {% endif %}
+
+        <h3>Reviews</h3>
+        <ul>
+            {% for review in reviews %}
+                <li>{{ review.user.username }}: {{ review.comment }} (Rating: {{ review.rating }})</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Add Review</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <button type="submit">Add Review</button>
+        </form>
+    </div>
+</body>
+</html>
